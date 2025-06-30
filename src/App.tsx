@@ -4,6 +4,7 @@ import MainView from "./views/MainView";
 import ConfigureView from "./views/ConfigureView";
 import AboutView from "./views/AboutView";
 import type { Stressor } from "./types";
+import { loadStressors, saveStressors } from "./utils/localStorage";
 
 type View = "main" | "configure" | "about";
 
@@ -16,26 +17,30 @@ function randomId(length: number = 6) {
 function App() {
   const [currentView, setCurrentView] = useState<View>("main");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [stressors, setStressors] = useState<Stressor[]>([]);
+  const [stressors, setStressors] = useState<Stressor[]>(loadStressors);
 
   const addStressor = (stressor: Omit<Stressor, "id">) => {
     const newStressor: Stressor = {
       ...stressor,
       id: randomId()
     };
-    setStressors((prev) => [...prev, newStressor]);
+    const updatedStressors = [...stressors, newStressor];
+    setStressors(updatedStressors);
+    saveStressors(updatedStressors);
   };
 
   const updateStressor = (id: string, updates: Partial<Stressor>) => {
-    setStressors((prev) =>
-      prev.map((stressor) =>
-        stressor.id === id ? { ...stressor, ...updates } : stressor
-      )
+    const updatedStressors = stressors.map((stressor) =>
+      stressor.id === id ? { ...stressor, ...updates } : stressor
     );
+    setStressors(updatedStressors);
+    saveStressors(updatedStressors);
   };
 
   const deleteStressor = (id: string) => {
-    setStressors((prev) => prev.filter((stressor) => stressor.id !== id));
+    const updatedStressors = stressors.filter((stressor) => stressor.id !== id);
+    setStressors(updatedStressors);
+    saveStressors(updatedStressors);
   };
 
   const getTotalScore = () => {

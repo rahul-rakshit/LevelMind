@@ -54,11 +54,6 @@ function ConfigureView({ stressors, addStressor, updateStressor, deleteStressor 
     closeModal();
   };
 
-  const handleDelete = (stressorId: string) => {
-    if (confirm("Are you sure you want to delete this stressor?")) {
-      deleteStressor(stressorId);
-    }
-  };
 
   return (
     <div className="p-4">
