@@ -68,15 +68,15 @@ function ConfigureView({ stressors, addStressor, updateStressor, deleteStressor 
           {stressors.map((stressor) => (
             <div key={stressor.id} className="bg-white rounded-lg p-4 shadow-sm border">
               <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900 mb-1">{stressor.title}</h3>
+                <div className="flex-1 min-w-0 pr-2">
+                  <h3 className="font-semibold text-gray-900 mb-1 break-words">{stressor.title}</h3>
                   {stressor.description && (
-                    <p className="text-sm text-gray-600">{stressor.description}</p>
+                    <p className="text-sm text-gray-600 break-words">{stressor.description}</p>
                   )}
                 </div>
                 <button
                   onClick={() => openEditModal(stressor)}
-                  className="text-blue-600 hover:text-blue-800 p-3 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors ml-4"
+                  className="text-blue-600 hover:text-blue-800 p-3 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors ml-2 flex-shrink-0"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -97,7 +97,7 @@ function ConfigureView({ stressors, addStressor, updateStressor, deleteStressor 
         </button>
       </div>
 
-      <Dialog open={isModalOpen} onClose={closeModal} className="relative z-50">
+      <Dialog open={isModalOpen} onClose={closeModal} className="relative z-50" data-testid="configure-stressor-modal">
         <div className="fixed inset-0 bg-black/20" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <DialogPanel className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
@@ -117,10 +117,11 @@ function ConfigureView({ stressors, addStressor, updateStressor, deleteStressor 
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="stressor-title" className="block text-sm font-medium text-gray-700 mb-2">
                   Title *
                 </label>
                 <input
+                  id="stressor-title"
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
@@ -130,10 +131,11 @@ function ConfigureView({ stressors, addStressor, updateStressor, deleteStressor 
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="stressor-description" className="block text-sm font-medium text-gray-700 mb-2">
                   Description
                 </label>
                 <textarea
+                  id="stressor-description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
