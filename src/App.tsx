@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
+import {
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild
+} from "@headlessui/react";
 import MainView from "./views/MainView";
 import ConfigureView from "./views/ConfigureView";
 import AboutView from "./views/AboutView";
@@ -89,7 +94,11 @@ function App() {
       <header className="sticky top-0 bg-white shadow-sm border-b z-40">
         <div className="px-4 py-3 flex items-center justify-between">
           <button
+            id="menu-button"
             className="p-2 rounded-md hover:bg-gray-100"
+            aria-expanded={isDrawerOpen}
+            aria-controls="menu-list"
+            aria-label="Open navigation menu"
             onClick={() => setIsDrawerOpen(true)}
           >
             <svg
@@ -138,7 +147,9 @@ function App() {
               <DialogPanel className="w-64 bg-white shadow-xl">
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-lg font-semibold text-gray-900">Menu</h2>
+                    <h2 className="text-lg font-semibold text-gray-900">
+                      Menu
+                    </h2>
                     <button
                       className="p-1 rounded-md hover:bg-gray-100"
                       onClick={() => setIsDrawerOpen(false)}
