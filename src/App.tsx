@@ -13,7 +13,7 @@ import { loadStressors, saveStressors } from "./utils/localStorage";
 
 type View = "main" | "configure" | "about";
 
-function randomId(length: number = 6) {
+export function randomId(length: number = 6) {
   return Math.random()
     .toString(36)
     .substring(2, length + 2);
