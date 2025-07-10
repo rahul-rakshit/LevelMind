@@ -9,8 +9,14 @@ interface ConfigureViewProps {
   deleteStressor: (id: string) => void;
 }
 
-function ConfigureView({ stressors, addStressor, updateStressor, deleteStressor }: ConfigureViewProps) {
+function ConfigureView({
+  stressors,
+  addStressor,
+  updateStressor,
+  deleteStressor
+}: ConfigureViewProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [editingStressor, setEditingStressor] = useState<Stressor | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -42,18 +48,17 @@ function ConfigureView({ stressors, addStressor, updateStressor, deleteStressor 
     if (editingStressor) {
       updateStressor(editingStressor.id, {
         title: title.trim(),
-        description: description.trim(),
+        description: description.trim()
       });
     } else {
       addStressor({
         title: title.trim(),
         description: description.trim(),
-        severity: 0,
+        severity: 0
       });
     }
     closeModal();
   };
-
 
   return (
     <div className="p-4">
@@ -66,20 +71,39 @@ function ConfigureView({ stressors, addStressor, updateStressor, deleteStressor 
       ) : (
         <div className="space-y-4">
           {stressors.map((stressor) => (
-            <div key={stressor.id} className="bg-white rounded-lg p-4 shadow-sm border">
+            <div
+              key={stressor.id}
+              className="bg-white rounded-lg p-4 shadow-sm border"
+            >
               <div className="flex justify-between items-start">
                 <div className="flex-1 min-w-0 pr-2">
-                  <h3 className="font-semibold text-gray-900 mb-1 break-words">{stressor.title}</h3>
+                  <h3 className="font-semibold text-gray-900 mb-1 break-words">
+                    {stressor.title}
+                  </h3>
                   {stressor.description && (
-                    <p className="text-sm text-gray-600 break-words">{stressor.description}</p>
+                    <p className="text-sm text-gray-600 break-words">
+                      {stressor.description}
+                    </p>
                   )}
                 </div>
                 <button
                   onClick={() => openEditModal(stressor)}
                   className="text-blue-600 hover:text-blue-800 p-3 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors ml-2 flex-shrink-0"
+                  aria-label={`Edit stressor ${stressor.title}`}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    alt="Edit"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
                   </svg>
                 </button>
               </div>
@@ -97,7 +121,12 @@ function ConfigureView({ stressors, addStressor, updateStressor, deleteStressor 
         </button>
       </div>
 
-      <Dialog open={isModalOpen} onClose={closeModal} className="relative z-50" data-testid="configure-stressor-modal">
+      <Dialog
+        open={isModalOpen}
+        onClose={closeModal}
+        className="relative z-50"
+        data-testid="configure-stressor-modal"
+      >
         <div className="fixed inset-0 bg-black/20" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <DialogPanel className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
@@ -109,15 +138,28 @@ function ConfigureView({ stressors, addStressor, updateStressor, deleteStressor 
                 onClick={closeModal}
                 className="text-gray-400 hover:text-gray-600 p-1 rounded"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label htmlFor="stressor-title" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="stressor-title"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Title *
                 </label>
                 <input
@@ -131,7 +173,10 @@ function ConfigureView({ stressors, addStressor, updateStressor, deleteStressor 
               </div>
 
               <div>
-                <label htmlFor="stressor-description" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="stressor-description"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Description
                 </label>
                 <textarea
@@ -147,24 +192,21 @@ function ConfigureView({ stressors, addStressor, updateStressor, deleteStressor 
               <div className="flex justify-between items-center pt-4">
                 {editingStressor ? (
                   <button
-                    onClick={() => {
-                      if (confirm("Are you sure you want to delete this stressor?")) {
-                        deleteStressor(editingStressor.id);
-                        closeModal();
-                      }
-                    }}
+                    onClick={() => setIsDeleteConfirmOpen(true)}
                     className="px-4 py-2 text-red-600 bg-red-50 rounded-md hover:bg-red-100 transition-colors"
+                    aria-label="Delete stressor"
                   >
                     Delete
                   </button>
                 ) : (
                   <div></div>
                 )}
-                
+
                 <div className="flex space-x-3">
                   <button
                     onClick={closeModal}
                     className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                    aria-label="cancel-editing-stressor"
                   >
                     Cancel
                   </button>
@@ -176,6 +218,68 @@ function ConfigureView({ stressors, addStressor, updateStressor, deleteStressor 
                     {editingStressor ? "Save Changes" : "Add Stressor"}
                   </button>
                 </div>
+              </div>
+            </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
+
+      <Dialog
+        open={isDeleteConfirmOpen}
+        onClose={() => setIsDeleteConfirmOpen(false)}
+        className="relative z-50"
+      >
+        <div className="fixed inset-0 bg-black/20" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <DialogPanel className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+            <div className="flex items-center mb-4">
+              <div className="flex-shrink-0 w-10 h-10 mx-auto bg-red-100 rounded-full flex items-center justify-center">
+                <svg
+                  className="w-6 h-6 text-red-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Delete Stressor
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to delete this stressor? This action
+                cannot be undone.
+              </p>
+
+              <div className="flex justify-center space-x-3">
+                <button
+                  onClick={() => setIsDeleteConfirmOpen(false)}
+                  className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                  aria-label="cancel-delete"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    if (editingStressor) {
+                      deleteStressor(editingStressor.id);
+                      closeModal();
+                    }
+                    setIsDeleteConfirmOpen(false);
+                  }}
+                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                  aria-label="confirm-delete"
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </DialogPanel>

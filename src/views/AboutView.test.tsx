@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import App from "../App";
 
 describe("AboutView", () => {
-  it("Going to the About view shows you an About heading", async () => {
+  it("Shows you an About heading", async () => {
     const user = userEvent.setup();
     render(<App />);
 
